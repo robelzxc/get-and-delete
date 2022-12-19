@@ -51,20 +51,21 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
           itemCount: userInformation.length,
           itemBuilder: (context, index){
-            return Card(
+            return Dismissible(
+              background: Container(
+                color: Colors.red,
+                child: const Icon(Icons.delete),
+              ),
+              key: ValueKey<Map>(userInformation[index]),
+                  onDismissed: (DismissDirection direction){
+                      deleteData(userInformation[index]['id']);
+                  },
+              child:Card(
                 child: ListTile(
                   title: Text(userInformation[index]['name']),
                   subtitle: Text(userInformation[index]['email']),
-                  trailing: PopupMenuButton(
-                      onSelected: (value) async{
-                        if(value == 'delete'){
-                          deleteData(userInformation[index]['id']);
-                        }
-                      }, itemBuilder: (context){
-                        return [const PopupMenuItem(value: 'delete',child: Text('Delete'))];
-                    },
-                  ),
                 ),
+              ),
             );
           }
       ),
